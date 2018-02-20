@@ -1,0 +1,32 @@
+version: "3"
+services:
+   db:
+      image: mysql:5.7
+      restart: always
+      environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: xoops
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: password
+          MYSQL_ALLOW_EMPTY_PASSWORD: 1
+          HOST: mysql
+      ports:
+        - 3306:3306
+   xoops:
+     image: xtest259apache
+     restart: always
+     ports:
+      - "8000:80"
+     depends_on:
+       - db
+   phpmyadmin:
+       image: phpmyadmin/phpmyadmin
+       ports:
+         - '8181:80'
+       environment:
+         MYSQL_ROOT_PASSWORD: 'password'
+         MYSQL_PASSWORD: 'password'
+         MYSQL_USER: 'admin'
+         MYSQL_ALLOW_EMPTY_PASSWORD: 1
+       depends_on:
+         - db
